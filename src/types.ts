@@ -5,23 +5,12 @@ export interface KeyPair {
 export interface Wallet {
   privateKey: string
   publicKey: string
-  cosmosAddress: string
-  seedPhrase: string
+  libocoinAddress: string
 }
 export interface StoredWallet {
   name: string
   address: string
   wallet: string // encrypted wallet
-  network: string
-  HDPath: string
-  curve: string
-}
-export interface WalletIndex {
-  name: string
-  address: string
-  network?: string // not stored, but enriched with
-  HDPath?: string // not stored, but enriched with
-  curve?: string // not stored, but enriched with
 }
 export interface Coin {
   denom: string
@@ -38,4 +27,7 @@ export interface StdSignMsg {
   fee: Fee
   msgs: any[]
   memo: string
+}
+export interface StdSignandverifyMsg {
+  message: string
 }

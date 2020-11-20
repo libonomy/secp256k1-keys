@@ -1,18 +1,15 @@
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const { IgnorePlugin } = require('webpack')
-
 const config = {
   devtool: "cheap-source-map",
   entry: ['./src/index.ts'],
   output: {
     path: __dirname + '/lib',
-    filename: 'cosmos-keys.js',
-    library: 'cosmos-keys',
+    filename: 'libocoin-keys.js',
+    library: 'libocoin-keys',
     libraryTarget: 'umd',
     umdNamedDefine: true,
     globalObject: 'typeof self !== \'undefined\' ? self : this',
   },
-  resolve: {
+  resolve: { 
     extensions: ['.tsx', '.ts', '.js']
   },
   module: {
@@ -31,17 +28,6 @@ const config = {
         exclude: /node_modules/
       }
     ]
-  },
-  plugins: [
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      openAnalyzer: false,
-      reportFilename: '../bundle_analyzer/bundle_sizes.html'
-    }),
-    new IgnorePlugin({
-      checkContext: context => context.includes('bip39/src/wordlists'),
-      checkResource: resource => resource !== './english.json'
-    })
-  ]
+  }
 }
-module.exports = config
+module.exports = config;

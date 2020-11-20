@@ -1,4 +1,4 @@
-import { Wallet, StoredWallet, WalletIndex } from './types'
+import { Wallet, StoredWallet } from './types';
 
 const CryptoJS = require('crypto-js')
 
@@ -10,7 +10,7 @@ const CryptoJS = require('crypto-js')
  * i.e. to show all wallets available.
  */
 
-const KEY_TAG = `cosmos-wallets`
+const KEY_TAG = `libonomy-wallets`
 
 const keySize = 256
 const iterations = 100
@@ -33,21 +33,14 @@ export function getStoredWallet(address: string, password: string): Wallet {
 }
 
 // store a wallet encrypted in localstorage
-export function storeWallet(
-  wallet: Wallet,
-  name: string,
-  password: string,
-  network: string,
-  HDPath: string = `m/44'/118'/0'/0/0`, // default
-  curve: string = `ed25519` // default
-): void {
-  const storedWallet = loadFromStorage(wallet.cosmosAddress)
+export function storeWallet(wallet: Wallet, name: string, password: string): void {
+  const storedWallet = loadFromStorage(wallet.libocoinAddress)
   if (storedWallet) {
     throw new Error("The wallet was already stored. Can't store the same wallet again.")
   }
 
   const ciphertext = encrypt(JSON.stringify(wallet), password)
-  addToStorage(name, wallet.cosmosAddress, ciphertext, network, HDPath, curve)
+  addToStorage(name, wallet.libocoinAddress, ciphertext)
 }
 
 // store a wallet encrypted in localstorage
@@ -79,22 +72,8 @@ export function testPassword(address: string, password: string) {
 }
 
 // returns the index of the stored wallets
-export function getWalletIndex(enriched: Boolean = true): WalletIndex[] {
-  let wallets = JSON.parse(localStorage.getItem(KEY_TAG + '-index') || '[]')
-  if (enriched) {
-    // add network data to index
-    return wallets.map((wallet: WalletIndex) => {
-      const walletData = loadFromStorage(wallet.address)
-      if (walletData && walletData.network) {
-        // enrich with network data
-        wallet.network = walletData.network
-        wallet.HDPath = walletData.HDPath
-        wallet.curve = walletData.curve
-      }
-      return wallet
-    })
-  }
-  return wallets
+export function getWalletIndex(): [{ name: string; address: string }] {
+  return JSON.parse(localStorage.getItem(KEY_TAG + '-index') || '[]')
 }
 
 // loads an encrypted wallet from localstorage
@@ -107,37 +86,27 @@ function loadFromStorage(address: string): StoredWallet | null {
 }
 
 // stores an encrypted wallet in localstorage
-function addToStorage(
-  name: string,
-  address: string,
-  ciphertext: string,
-  network: string,
-  HDPath: string,
-  curve: string
-): void {
+function addToStorage(name: string, address: string, ciphertext: string): void {
   addToIndex(name, address)
 
   const storedWallet: StoredWallet = {
     name,
     address,
-    wallet: ciphertext,
-    network,
-    HDPath,
-    curve,
+    wallet: ciphertext
   }
 
   localStorage.setItem(KEY_TAG + '-' + address, JSON.stringify(storedWallet))
 }
 
 // removed a wallet from localstorage
-export function removeFromStorage(address: string): void {
+function removeFromStorage(address: string): void {
   removeFromIndex(address)
   localStorage.removeItem(KEY_TAG + '-' + address)
 }
 
 // stores the names of the keys to prevent name collision
 function addToIndex(name: string, address: string): void {
-  const storedIndex = getWalletIndex(false)
+  const storedIndex = getWalletIndex()
 
   if (storedIndex.find(({ name: storedName }) => name === storedName)) {
     throw new Error(`Key with that name already exists`)
@@ -148,7 +117,7 @@ function addToIndex(name: string, address: string): void {
 }
 
 function removeFromIndex(address: string): void {
-  const storedIndex = getWalletIndex(false)
+  const storedIndex = getWalletIndex()
 
   const updatedIndex = storedIndex.filter(({ address: storedAddress }) => storedAddress !== address)
   localStorage.setItem(KEY_TAG + '-index', JSON.stringify(updatedIndex))
@@ -159,7 +128,7 @@ function encrypt(message: string, password: string): string {
 
   const key = CryptoJS.PBKDF2(password, salt, {
     keySize: keySize / 32,
-    iterations: iterations,
+    iterations: iterations
   })
 
   const iv = CryptoJS.lib.WordArray.random(128 / 8)
@@ -167,29 +136,37 @@ function encrypt(message: string, password: string): string {
   const encrypted = CryptoJS.AES.encrypt(message, key, {
     iv: iv,
     padding: CryptoJS.pad.Pkcs7,
-    mode: CryptoJS.mode.CBC,
+    mode: CryptoJS.mode.CBC
   })
-
+  
   // salt, iv will be hex 32 in length
   // append them to the ciphertext for use  in decryption
-  const transitmessage = salt.toString() + iv.toString() + encrypted.toString()
-  return transitmessage
+  const transitmessage = salt.toString() + iv.toString() + encrypted.toString() //+ hmacEncrypted.toString()
+  const hmacEncrypted = CryptoJS.HmacSHA256((salt.toString() + iv.toString() + encrypted.toString()),key)
+  return (transitmessage +hmacEncrypted.toString())
 }
 
 function decrypt(transitMessage: string, password: string): string {
   const salt = CryptoJS.enc.Hex.parse(transitMessage.substr(0, 32))
   const iv = CryptoJS.enc.Hex.parse(transitMessage.substr(32, 32))
-  const encrypted = transitMessage.substring(64)
-
+  const length = transitMessage.length
+  const hmac = transitMessage.substr((length-64))
+  const encrypted = transitMessage.substring(64,(length-64))
   const key = CryptoJS.PBKDF2(password, salt, {
     keySize: keySize / 32,
-    iterations: iterations,
+    iterations: iterations
   })
-
+  
+  const hmacDecrypted = CryptoJS.HmacSHA256((salt.toString()+iv.toString()+encrypted.toString()),key)
+  if(hmac.toString() !== hmacDecrypted.toString()){
+    throw new Error("Failed MAC check!")
+  }
   const decrypted = CryptoJS.AES.decrypt(encrypted, key, {
     iv: iv,
     padding: CryptoJS.pad.Pkcs7,
-    mode: CryptoJS.mode.CBC,
+    mode: CryptoJS.mode.CBC
   }).toString(CryptoJS.enc.Utf8)
+ 
+ 
   return decrypted
 }

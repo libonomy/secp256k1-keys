@@ -1,3 +1,3 @@
 export * from './types'
-export * from './cosmos-keys'
-export * from './cosmos-keystore'
+export * from './libocoin-keys'
+export * from './libocoin-keystore'
