@@ -4,7 +4,7 @@ const config = {
   output: {
     path: __dirname + '/lib',
     filename: 'libocoin-keys.js',
-    library: 'libocoin-keys', 
+    library: 'libocoin-keys',
     libraryTarget: 'umd',
     umdNamedDefine: true,
     globalObject: 'typeof self !== \'undefined\' ? self : this',

@@ -11,10 +11,10 @@
   ],
   "main": "lib/libocoin-keys.js",
   "typings": "lib/types/libocoin-keys.d.ts",
-  "author": "libonomy <developers@libonomy.com",
+  "author": "libonomy  <developers@libonomy.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/libonomy/secp256k1-keys.git"
+    "url": "git+https://github.com/libonomy/secp256k1-keys.git"
   },
   "license": "Apache-2.0",
   "engines": {
@@ -124,5 +124,12 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/libonomy/secp256k1-keys/issues"
+  },
+  "homepage": "https://github.com/libonomy/secp256k1-keys#readme",
+  "directories": {
+    "test": "test"
   }
 }
