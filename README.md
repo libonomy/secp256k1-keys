@@ -16,8 +16,7 @@ keypairs,message signing and bech32prefix addressed standard followed commonly
 by blockchains.
 
 This library gives the ability for offline message signing with the relevant private key and than
-broadcasting the signed transaction using the post/tx route
-of the peer url or by running the node locally.
+broadcasting the signed transaction using the RPC or REST calls
 
 Note: The library is compatible/can be integrated with any JS implementation of frontend/backend.
 This library deals with tasks that are considered *security-critical* and should be used very carefully.
