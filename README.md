@@ -1,19 +1,24 @@
-# secp256k1 Keys
+# Overview
 
 It should be acknowledged that the libraries that your are going to be interacting with are just the
 application level implementation with similar standards. Libonomy shouldnt be confused with
 COSMOS, Polkadot,Ethereum or others.
+
 As the consensus run by libonomy is Aphelion: AI based protocol in its initial Coin Support with
 staking systems i.e DPOS(Tendermint), POS.
+
 Aphelion runs multiple pooling networks within its AI core so its strongly recommended when
 exploring the system you utilize the relevant pool or keep your self updated with our github or
 educate yourself through our whitepaper or development team.
+
 @libonomy/secp256k1-keys is based on elliptic curve cryptography is used for generating
 keypairs,message signing and bech32prefix addressed standard followed commonly
 by blockchains.
+
 This library gives the ability for offline message signing with the relevant private key and than
 broadcasting the signed transaction using the post/tx route
 of the peer url or by running the node locally.
+
 Note: The library is compatible/can be integrated with any JS implementation of frontend/backend.
 This library deals with tasks that are considered *security-critical* and should be used very carefully.
 
