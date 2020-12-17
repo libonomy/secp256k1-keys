@@ -5,7 +5,7 @@ export interface KeyPair {
 export interface Wallet {
   privateKey: string
   publicKey: string
-  libocoinAddress: string
+  libonomyAddress: string
 }
 export interface StoredWallet {
   name: string

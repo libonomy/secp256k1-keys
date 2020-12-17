@@ -29,7 +29,7 @@ The examples of using the library are given below.
 ```js
 import { generateWallet } from "@libonomy/secp256k1-keys"
 
-const { libocoinAddress, privateKey, publicKey } = generateWallet()
+const { libonomyAddress, privateKey, publicKey } = generateWallet()
 // Attention: protect the `privateKey` at all cost and never display it anywhere!!
 ```
 
@@ -39,7 +39,7 @@ const { libocoinAddress, privateKey, publicKey } = generateWallet()
 //import the generate wallet function
 import { generateWallet } from "@libonomy/secp256k1-keys"
 //extract the necessary usage keys
-const { libocoinAddress, privateKey, publicKey } = generateWallet() 
+const { libonomyAddress, privateKey, publicKey } = generateWallet() 
 // Attention: protect the `privateKey` at all cost and never display it anywhere!!
 ```
 
@@ -51,7 +51,7 @@ import { generateWalletFromSeed } from "@libonomy/secp256k1-keys"
 const seed = ...24 byte seed phrase
 //bech32prefix is being used in libonomy for easily moving assets between different sidechains
 const bech32prefix = 'libo';
-const { libocoinAddress, privateKey, publicKey } = generateWalletFromSeed(seed, bech32prefix)
+const { libonomyAddress, privateKey, publicKey } = generateWalletFromSeed(seed, bech32prefix)
 
 ```
 

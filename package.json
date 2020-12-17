@@ -1,6 +1,6 @@
 {
   "name": "@libonomy/secp256k1-keys",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "libonomy JS standard for address generation and offline signature support",
   "keywords": [
     "libonomy",
@@ -9,8 +9,8 @@
     "libo js",
     "libo sdk"
   ],
-  "main": "lib/libocoin-keys.js",
-  "typings": "lib/types/libocoin-keys.d.ts",
+  "main": "lib/libonomy-keys.js",
+  "typings": "lib/types/libonomy-keys.d.ts",
   "author": "libonomy  <developers@libonomy.com>",
   "repository": {
     "type": "git",

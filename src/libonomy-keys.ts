@@ -7,7 +7,7 @@ import * as util from 'util'
 import { Wallet, StdSignMsg,StdSignandverifyMsg, KeyPair } from './types';
 import { decode } from 'punycode'
 
-const hdPathLibocoin = `m/44'/118'/0'/0/0` // coin allocation
+const hdPathLibonomy = `m/44'/118'/0'/0/0` // coin allocation
 
 /* tslint:disable-next-line:strict-type-predicates */
 const windowObject: Window | null = typeof window === 'undefined' ? null : window
@@ -35,11 +35,11 @@ export function randomBytes(size: number, window = windowObject): Buffer {
 export function generateWalletFromSeed(mnemonic: string): Wallet {
   const masterKey = deriveMasterKey(mnemonic)
   const { privateKey, publicKey } = deriveKeypair(masterKey)
-  const libocoinAddress = getlibocoinAddress(publicKey)
+  const libonomyAddress = getlibonomyAddress(publicKey)
   return {
     privateKey: privateKey.toString('hex'),
     publicKey: publicKey.toString('hex'),
-    libocoinAddress
+    libonomyAddress
   }
 }
 
@@ -57,11 +57,11 @@ export function generateWallet(randomBytesFunc: (size: number) => Buffer = rando
 }
 
 // NOTE: this only works with a compressed public key (33 bytes)
-export function getlibocoinAddress(publicKey: Buffer): string {
+export function getlibonomyAddress(publicKey: Buffer): string {
   const message = CryptoJS.enc.Hex.parse(publicKey.toString('hex'))
   const address = CryptoJS.RIPEMD160(CryptoJS.SHA256(message) as any).toString()
-  const libocoinAddress = bech32ify(address, `libo`)
-  return libocoinAddress
+  const libonomyAddress = bech32ify(address, `libonomy`)
+  return libonomyAddress
 }
 
 function deriveMasterKey(mnemonic: string): bip32.BIP32 {
@@ -74,8 +74,8 @@ function deriveMasterKey(mnemonic: string): bip32.BIP32 {
 }
 
 function deriveKeypair(masterKey: bip32.BIP32): KeyPair {
-  const libocoinHD = masterKey.derivePath(hdPathLibocoin)
-  const privateKey = libocoinHD.privateKey
+  const libonomyHD = masterKey.derivePath(hdPathLibonomy)
+  const privateKey = libonomyHD.privateKey
   const publicKey = secp256k1.publicKeyCreate(privateKey, true)
 
   return {
@@ -115,15 +115,15 @@ export function verifySignature(signMessage: StdSignandverifyMsg | string, signa
   const signMessageString: string =
     typeof signMessage === 'string' ? signMessage : JSON.stringify(signMessage.message)
   const signHash = Buffer.from(CryptoJS.SHA256(signMessageString).toString(), `hex`)
-  const hash =  magicHash(signMessageString,'libo')
+  const hash =  magicHash(signMessageString,'libonomy')
   var sig = signature.slice(0,signature.length-1)
   var chk = signature.slice(signature.length-1,signature.length)
   if(parseInt(chk.toString()) >= 0){
     recoverBit = parseInt(chk.toString())
   }
   var extractedpublicKey = secp256k1.recover(signHash, sig, recoverBit, true)
-  const libocoinaddress = Buffer.from(getlibocoinAddress(extractedpublicKey), 'base64')
-  if (Buffer.compare(publicKey,libocoinaddress) != 0){
+  const libonomyaddress = Buffer.from(getlibonomyAddress(extractedpublicKey), 'base64')
+  if (Buffer.compare(publicKey,libonomyaddress) != 0){
     return false
   }
   return secp256k1.verify(signHash, sig,extractedpublicKey)

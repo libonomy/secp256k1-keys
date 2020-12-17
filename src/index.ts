@@ -1,3 +1,3 @@
 export * from './types'
-export * from './libocoin-keys'
-export * from './libocoin-keystore'
+export * from './libonomy-keys'
+export * from './libonomy-keystore'

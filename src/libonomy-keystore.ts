@@ -34,13 +34,13 @@ export function getStoredWallet(address: string, password: string): Wallet {
 
 // store a wallet encrypted in localstorage
 export function storeWallet(wallet: Wallet, name: string, password: string): void {
-  const storedWallet = loadFromStorage(wallet.libocoinAddress)
+  const storedWallet = loadFromStorage(wallet.libonomyAddress)
   if (storedWallet) {
     throw new Error("The wallet was already stored. Can't store the same wallet again.")
   }
 
   const ciphertext = encrypt(JSON.stringify(wallet), password)
-  addToStorage(name, wallet.libocoinAddress, ciphertext)
+  addToStorage(name, wallet.libonomyAddress, ciphertext)
 }
 
 // store a wallet encrypted in localstorage
