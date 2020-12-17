@@ -1,16 +1,16 @@
 import { testPassword, getStoredWallet, storeWallet, removeWallet } from '../src/libonomy-keystore'
 
 const mockWallet = {
-  libonomyAddress: `libo1r5v5srda7xfth3hn2s26txvrcrntldjumt8mhl`,
+  libonomyAddress: `libonomy1r5v5srda7xfth3hn2s26txvrcrntldjumt8mhl`,
   mnemonic: `abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art`,
   privateKey: `8088c2ed2149c34f6d6533b774da4e1692eb5cb426fdbaef6898eeda489630b7`,
   publicKey: `02ba66a84cf7839af172a13e7fc9f5e7008cb8bca1585f8f3bafb3039eda3c1fdd`
 }
 const mockWallet2 = Object.assign({}, mockWallet, {
-  libonomyAddress: `libo1r5v5srda7xfth3hn2s26txvrcrntldjumt8mh2`
+  libonomyAddress: `libonomy1r5v5srda7xfth3hn2s26txvrcrntldjumt8mh2`
 })
 const mockWallet3 = Object.assign({}, mockWallet, {
-  libonomyAddress: `libo1r5v5srda7xfth3hn2s26txvrcrntldjumt8mh3`
+  libonomyAddress: `libonomy1r5v5srda7xfth3hn2s26txvrcrntldjumt8mh3`
 })
 
 describe(`Keystore`, () => {
@@ -21,7 +21,7 @@ describe(`Keystore`, () => {
   it(`stores a wallet`, () => {
     storeWallet(mockWallet, 'mock-name', 'mock-password')
     expect(
-      localStorage.getItem(`libonomy-wallets-libo1r5v5srda7xfth3hn2s26txvrcrntldjumt8mhl`)
+      localStorage.getItem(`libonomy-wallets-libonomy1r5v5srda7xfth3hn2s26txvrcrntldjumt8mhl`)
     ).toBeDefined()
   })
 

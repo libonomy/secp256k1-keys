@@ -50,7 +50,7 @@ import { generateWalletFromSeed } from "@libonomy/secp256k1-keys"
 //generate the 24 byte length seed phrase or translate it to mnemonic using mnemonic translater
 const seed = ...24 byte seed phrase
 //bech32prefix is being used in libonomy for easily moving assets between different sidechains
-const bech32prefix = 'libo';
+const bech32prefix = 'libonomy';
 const { libonomyAddress, privateKey, publicKey } = generateWalletFromSeed(seed, bech32prefix)
 
 ```
@@ -70,10 +70,10 @@ chain_id:"main-beta-v1",
 fee:{amount:[{amount:"37",denom:"ulby"}],
 gas:"11600"},
 memo:"(test beta transaction)",
-msgs:[{type:"libo-dpos-sdk/MsgSend",value:{amount:[{amount:"1900000000",
+msgs:[{type:"aphelion/MsgSend",value:{amount:[{amount:"1900000000",
 denom:"ulby"}],
-from_address:"libo89olempempp92x9hyzz**********",
-to_address:"libo89olempempp92x9hyzz**********"}}],
+from_address:"libonomy89olempempp92x9hyzz**********",
+to_address:"libonomy89olempempp92x9hyzz**********"}}],
 sequence:"0"
 },
 //Sign the message
